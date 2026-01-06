@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +19,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.TrabalhoBD.clinica.models.Medico;
 import com.TrabalhoBD.clinica.services.MedicoService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/medico")
-
+@Validated
 public class MedicoController {
 
     @Autowired
@@ -32,6 +35,12 @@ public class MedicoController {
         return ResponseEntity.ok().body(medico);
     } 
 
+    @GetMapping("nome/{nome}")
+    public ResponseEntity<Medico> findByNome(@Valid @PathVariable String nome){
+        Medico medico = this.medicoService.findByNome(nome);
+        return ResponseEntity.ok().body(medico);
+    } 
+
     @GetMapping
     public ResponseEntity<List<Medico>> findAllMedicos(){
         List<Medico> list = this.medicoService.findAllMedicos();
@@ -40,7 +49,7 @@ public class MedicoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createMedico (@RequestBody Medico medico){
+    public ResponseEntity<Void> createMedico (@Valid @RequestBody Medico medico){
         this.medicoService.createMedico(medico);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(medico.getId()).toUri();
@@ -49,7 +58,7 @@ public class MedicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateMedico(@RequestBody Medico medico, @PathVariable Long id){
+    public ResponseEntity<Void> updateMedico(@Valid @RequestBody Medico medico, @PathVariable Long id){
         medico.setId(id);
         medico = this.medicoService.updateMedico(medico);
         return ResponseEntity.noContent().build();

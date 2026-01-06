@@ -1,22 +1,18 @@
 package com.TrabalhoBD.clinica.models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.java.Log;
 
 @Entity(name="medico")
 @Table(name="medicos")
@@ -32,18 +28,16 @@ public class Medico {
     @Column(name="id", unique = true)
     private Long id;
 
-    @Column(name="CRM", unique = true)
-    private String crm;
-
-    @Column(name = "nome" , nullable = false, length = 250)
+    @Column(name="nome", unique = true)
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @ManyToMany
-    @JoinTable(
-    name = "especialidade_medico",
-    joinColumns = @JoinColumn(name = "especialidade_id"), 
-    inverseJoinColumns = @JoinColumn(name = "medico_id") 
-    )
-    private List<Especialidade> especialidades = new ArrayList<Especialidade>();
+    @Column(name = "crm" , nullable = false, length = 255)
+    @NotBlank(message = "CRM é obrigatório")
+    private String crm;
+
+    @Column(name = "especialidade" , nullable = false, length = 255)
+    @NotBlank(message = "Especialidade é obrigatório")
+    private String especialidade;
     
 }
