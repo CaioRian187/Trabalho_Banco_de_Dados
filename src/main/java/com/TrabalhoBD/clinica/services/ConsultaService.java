@@ -4,13 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 
 import com.TrabalhoBD.clinica.exceptions.NotFoundException;
 import com.TrabalhoBD.clinica.models.Consulta;
 import com.TrabalhoBD.clinica.repositories.ConsultaRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ConsultaService {
@@ -22,6 +24,24 @@ public class ConsultaService {
         Optional<Consulta> consulta = this.consultaRepository.findById(id);
         return consulta.orElseThrow( () -> new NotFoundException("Consulta de id = " + id + " não encontrada"));
     }
+
+    public List<Consulta> findAllByMedicoId(Long medicoId){
+        List<Consulta> consultas = this.consultaRepository.findByMedico_id(medicoId);
+        if (consultas.isEmpty()) {
+            throw new NotFoundException("Nenhuma consulta encontrada");
+        }
+        return consultas;
+    }
+
+    public List<Consulta> findAllByPacienteId(Long consultaId){
+        List<Consulta> consultas = this.consultaRepository.findByPaciente_id(consultaId);
+
+        if (consultas.isEmpty()){
+            throw new NotFoundException("Nenhuma consulta encontrada");
+        }
+        return consultas;
+    }
+
 
     public List<Consulta> findAll(){
         List<Consulta> list = this.consultaRepository.findAll();
@@ -49,13 +69,13 @@ public class ConsultaService {
     }
 
     public void deleteConsulta(Long id){
-        findById(id);
+        Consulta consulta = findById(id);
 
         try{
             this.consultaRepository.deleteById(id);
         }
-        catch(org.springframework.dao.DataIntegrityViolationException exception){
-            throw new com.TrabalhoBD.clinica.exceptions.DataIntegrityViolationException("Não é possível excluir, pois a consulta possui vinculações");
+        catch(DataIntegrityViolationException exception){
+            throw new DataIntegrityViolationException("Não é possível excluir, pois a consulta possui vinculações");
         }
     }
 }

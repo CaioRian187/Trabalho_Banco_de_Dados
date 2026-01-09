@@ -5,8 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -16,36 +14,32 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "consultas")
+@Table(name = "receitas")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-
-public class Consulta {
+public class Receita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     private Long id;
 
-    @Column(name = "data", nullable = false,length = 255)
+    @Column(name ="data_emissão", nullable = false, length = 255)
     @NotBlank
-    private String data;
+    private String data_emissao;
 
-    @Column(name = "horario", nullable = false, length = 255)
+    @Column(name = "medicamento", nullable = false, length = 255)
     @NotBlank
-    private String horario;
+    private String medicamento;
 
-    @Column(name = "observações", nullable = false, length = 255)
+    @Column(name = "dosagem", nullable = false, length = 255)
     @NotBlank
-    private String observacoes;
+    private String dosagem;
 
-    @ManyToOne
-    @JoinColumn(name = "medico_id", nullable =  false, updatable = false)
-    private Medico medico;
+    @Column(name = "instrucoes", nullable = false, length = 255)
+    @NotBlank
+    private String instrucoes;
 
-    @ManyToOne
-    @JoinColumn(name = "paciente_id", nullable = false, updatable = false)
-    private Paciente paciente;
 }

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import com.TrabalhoBD.clinica.exceptions.DataIntegrityViolationException;
 import com.TrabalhoBD.clinica.exceptions.NotFoundException;
 import com.TrabalhoBD.clinica.models.Paciente;
 import com.TrabalhoBD.clinica.repositories.PacienteRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PacienteService {
@@ -48,6 +48,7 @@ public class PacienteService {
 
         newPaciente.setNome(paciente.getNome());
         newPaciente.setCpf(paciente.getCpf());
+        newPaciente.setDataNascimento(paciente.getDataNascimento());
         newPaciente.setTelefone(paciente.getTelefone());
         newPaciente.setEndereco(paciente.getEndereco());
 
@@ -58,8 +59,8 @@ public class PacienteService {
         findById(id);
         try{
             this.pacienteRepository.deleteById(id);
-        }catch (org.springframework.dao.DataIntegrityViolationException exception){
-            throw new com.TrabalhoBD.clinica.exceptions.DataIntegrityViolationException("Não é possível excluir, pois o paciente possui vinculações");
+        }catch (DataIntegrityViolationException exception){
+            throw new DataIntegrityViolationException("Não é possível excluir, pois o paciente possui vinculações");
         }
     }
 }

@@ -3,6 +3,7 @@ package com.TrabalhoBD.clinica.controllers;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,7 @@ import jakarta.validation.Valid;
 @Validated
 public class PacienteController {
     
+    @Autowired
     private PacienteService pacienteService;
 
     @GetMapping("/{id}")
@@ -56,7 +58,7 @@ public class PacienteController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id")
+    @PutMapping("/{id}")
     public ResponseEntity<Paciente> updatePaciente(@Valid @RequestBody Paciente paciente, @PathVariable Long id){
         paciente.setId(id);
         paciente = this.pacienteService.updatePaciente(paciente);

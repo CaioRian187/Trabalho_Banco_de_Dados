@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.TrabalhoBD.clinica.models.Consulta;
 import com.TrabalhoBD.clinica.services.ConsultaService;
+import com.TrabalhoBD.clinica.services.MedicoService;
+import com.TrabalhoBD.clinica.services.PacienteService;
 
 import jakarta.validation.Valid;
 
@@ -29,10 +31,30 @@ public class ConsultaController {
     @Autowired
     private ConsultaService consultaService;
 
+    @Autowired
+    private MedicoService medicoService;
+
+    @Autowired
+    private PacienteService pacienteService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Consulta> findById(@PathVariable Long id){
         Consulta consulta = this.consultaService.findById(id);
         return ResponseEntity.ok().body(consulta);
+    }
+
+    @GetMapping("/medico/{medico_id}")
+    public ResponseEntity<List<Consulta>> findAllByMedicoId(@PathVariable Long medico_id){
+        this.medicoService.findById(medico_id);
+        List<Consulta> consultas = this.consultaService.findAllByMedicoId(medico_id);
+        return ResponseEntity.ok().body(consultas);
+    }
+
+    @GetMapping("/paciente/{paciente_id}")
+    public ResponseEntity<List<Consulta>> findAllByPacienteId(@PathVariable Long paciente_id){
+        this.pacienteService.findById(paciente_id);
+        List<Consulta> consultas = this.consultaService.findAllByPacienteId(paciente_id);
+        return ResponseEntity.ok().body(consultas);
     }
 
     @GetMapping

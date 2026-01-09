@@ -1,10 +1,17 @@
 package com.TrabalhoBD.clinica.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -34,6 +41,9 @@ public class Paciente {
     @NotBlank
     private String cpf;
 
+    @Column(name = "data_nascimento", nullable = false)
+    private String dataNascimento;
+
     @Column(name = "telefone", unique = true, nullable = false, length = 255)
     @NotBlank
     private String telefone;
@@ -41,4 +51,9 @@ public class Paciente {
     @Column(name = "endereço", nullable = false, length = 255)
     @NotBlank
     private String endereco;
+
+    @OneToMany(mappedBy = "paciente")
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private List<Consulta> consultas = new ArrayList<Consulta>();
+
 }
