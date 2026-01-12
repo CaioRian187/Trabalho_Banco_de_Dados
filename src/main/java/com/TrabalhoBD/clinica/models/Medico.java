@@ -34,18 +34,23 @@ public class Medico {
     private Long id;
 
     @Column(name="nome", unique = true)
-    @NotBlank()
+    @NotBlank
     private String nome;
 
     @Column(name = "crm" , nullable = false, length = 255)
-    @NotBlank()
+    @NotBlank
     private String crm;
 
     @Column(name = "especialidade" , nullable = false, length = 255)
-    @NotBlank()
+    @NotBlank
     private String especialidade;
     
     @OneToMany(mappedBy = "medico") 
     @JsonProperty(access = Access.WRITE_ONLY)
     private List<Consulta> consultas = new ArrayList<Consulta>();
+
+    @OneToMany(mappedBy = "medico")
+    @JsonProperty(access = Access.WRITE_ONLY)
+    private List<Exame> exames = new ArrayList<Exame>();
+    
 }
