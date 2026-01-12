@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.TrabalhoBD.clinica.exceptions.NotFoundException;
-import com.TrabalhoBD.clinica.models.Consulta;
 import com.TrabalhoBD.clinica.models.Receita;
 import com.TrabalhoBD.clinica.repositories.ReceitaRepository;
 
