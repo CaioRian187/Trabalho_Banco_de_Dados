@@ -2,7 +2,6 @@ package com.TrabalhoBD.clinica.services;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,7 +17,7 @@ public class EspecialidadeService {
     @Autowired
     private EspecialidadeRepository especialidadeRepository;
 
-    public Especialidade findById(UUID id){
+    public Especialidade findById(long id){
         Optional<Especialidade> especialidade = this.especialidadeRepository.findById(id);
         return especialidade.orElseThrow(() -> new NotFoundException("Especialidade de id = " + id + " não encontrada"));
     }
@@ -48,7 +47,7 @@ public class EspecialidadeService {
         return this.especialidadeRepository.save(newEspecialidade);
     }
 
-    public void delete(UUID id){
+    public void delete(long id){
         findById(id);
         try {
             this.especialidadeRepository.deleteById(id);

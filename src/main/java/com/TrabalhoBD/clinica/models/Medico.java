@@ -1,26 +1,22 @@
 package com.TrabalhoBD.clinica.models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name="medico")
-@Table(name="medicos")
+@Entity
+@Table(name = "medico")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,10 +26,10 @@ public class Medico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", unique = true)
+    @Column(name="id_medico", unique = true)
     private Long id;
 
-    @Column(name="nome", unique = true)
+    @Column(name = "nome_medico", nullable = false, length = 255)
     @NotBlank
     private String nome;
 
@@ -41,9 +37,17 @@ public class Medico {
     @NotBlank
     private String crm;
 
-    @Column(name = "especialidade" , nullable = false, length = 255)
+    @Column(name = "telefone", nullable = false, length = 20)
     @NotBlank
-    private String especialidade;
+    private String telefone;
+
+    @ManyToMany
+    @JoinTable(
+            name = "medico_especialidade",
+            joinColumns = @JoinColumn(name = "id_medico"),
+            inverseJoinColumns = @JoinColumn(name = "id_especialidade")
+    )
+    private Set<Especialidade> especialidades = new HashSet<>();
     
     @OneToMany(mappedBy = "medico") 
     @JsonProperty(access = Access.WRITE_ONLY)

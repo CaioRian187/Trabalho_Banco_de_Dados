@@ -32,7 +32,7 @@ public class Especialidade {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_especialidade", unique = true, nullable = false)
-    private UUID id;
+    private Long id;
 
     @Column(name = "nome_especialidade", nullable = false, length = 100)
     @NotBlank

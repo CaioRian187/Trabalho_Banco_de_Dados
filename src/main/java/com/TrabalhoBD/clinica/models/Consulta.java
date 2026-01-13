@@ -1,5 +1,6 @@
 package com.TrabalhoBD.clinica.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "consultas")
+@Table(name = "consulta")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -34,33 +35,25 @@ import lombok.Setter;
 public class Consulta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
+    @Column(name = "id_consulta", unique = true)
     private Long id;
 
-    @Column(name = "data", nullable = false,length = 255)
-    @NotBlank
-    private String data;
+    @Column(name = "data_hora", nullable = false)
+    private LocalDateTime dataHora;
 
-    @Column(name = "horario", nullable = false, length = 255)
-    @NotBlank
-    private String horario;
-
-    @Column(name = "observações", nullable = false, length = 255)
+    @Column(name = "observacoes", nullable = false, columnDefinition = "TEXT")
     @NotBlank
     private String observacoes;
 
     @ManyToOne
-    @JoinColumn(name = "medico_id", nullable =  false, updatable = false)
+    @JoinColumn(name = "id_medico", nullable =  false)
     private Medico medico;
 
     @ManyToOne
-    @JoinColumn(name = "paciente_id", nullable = false, updatable = false)
+    @JoinColumn(name = "id_paciente", nullable = false)
     private Paciente paciente;
 
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonProperty(access = Access.WRITE_ONLY)
     private List<Receita> receitas = new ArrayList<>();
-
-
-
 }

@@ -56,12 +56,11 @@ public class ConsultaService {
     @Transactional
     public void createConsulta(Consulta consulta){
         if (consulta.getReceitas() != null && !consulta.getReceitas().isEmpty()) {
-        for (Receita receita : consulta.getReceitas()) {
-            receita.setData_emissao(consulta.getData());
-            
-            receita.setConsulta(consulta);
+            for (Receita receita : consulta.getReceitas()) {
+                receita.setDataEmissao(consulta.getDataHora().toLocalDate());
+                receita.setConsulta(consulta);
+            }
         }
-    }
         this.consultaRepository.save(consulta);
     }
 
@@ -69,12 +68,11 @@ public class ConsultaService {
     public Consulta updateConsulta(Consulta consulta){
         Consulta newConsulta = this.findById(consulta.getId());
 
-        newConsulta.setData(consulta.getData());
-        newConsulta.setHorario(consulta.getHorario());
+        newConsulta.setDataHora(consulta.getDataHora());
         newConsulta.setObservacoes(consulta.getObservacoes());
 
         if (newConsulta.getReceitas() != null) {
-            newConsulta.getReceitas().forEach(r -> r.setData_emissao(newConsulta.getData()));
+            newConsulta.getReceitas().forEach(r -> r.setDataEmissao(newConsulta.getDataHora().toLocalDate()));
         }
 
         return this.consultaRepository.save(newConsulta);

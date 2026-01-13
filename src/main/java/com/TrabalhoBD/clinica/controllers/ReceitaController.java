@@ -51,7 +51,7 @@ public class ReceitaController {
     public ResponseEntity<Void> createReceita(@Valid @RequestBody Receita receita){
         Consulta consulta = this.consultaService.findById(receita.getConsulta().getId());
         receita.setConsulta(consulta);
-        receita.setData_emissao(consulta.getData());
+        receita.setDataEmissao(consulta.getDataHora().toLocalDate());
 
         this.receitaService.create(receita);
 
@@ -64,9 +64,9 @@ public class ReceitaController {
     public ResponseEntity<Void> updateReceita(@Valid @RequestBody Receita receita, @PathVariable Long id){
         receita.setId(id);
 
-        if (receita.getData_emissao() == null && receita.getConsulta() != null) {
+        if (receita.getDataEmissao() == null && receita.getConsulta() != null) {
             Consulta c = this.consultaService.findById(receita.getConsulta().getId());
-            receita.setData_emissao(c.getData());
+            receita.setDataEmissao(c.getDataHora().toLocalDate());
         }
         
         receita = this.receitaService.update(receita);

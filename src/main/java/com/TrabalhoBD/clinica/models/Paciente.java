@@ -1,5 +1,6 @@
 package com.TrabalhoBD.clinica.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "pacientes")
+@Table(name = "paciente")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,10 +31,10 @@ import lombok.Setter;
 public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
+    @Column(name = "id_paciente", unique = true)
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 255)
+    @Column(name = "nome_paciente", nullable = false, length = 255)
     @NotBlank
     private String nome;
 
@@ -42,7 +43,7 @@ public class Paciente {
     private String cpf;
 
     @Column(name = "data_nascimento", nullable = false)
-    private String dataNascimento;
+    private LocalDate dataNascimento;
 
     @Column(name = "telefone", unique = true, nullable = false, length = 255)
     @NotBlank

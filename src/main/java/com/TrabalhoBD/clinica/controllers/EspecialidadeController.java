@@ -2,7 +2,6 @@ package com.TrabalhoBD.clinica.controllers;
 
 import java.net.URI;
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class EspecialidadeController {
     private EspecialidadeService especialidadeService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Especialidade> findById(@PathVariable UUID id){
+    public ResponseEntity<Especialidade> findById(@PathVariable long id){
         Especialidade especialidade = this.especialidadeService.findById(id);
         return ResponseEntity.ok().body(especialidade);
     }
@@ -60,14 +59,14 @@ public class EspecialidadeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@Valid @RequestBody Especialidade especialidade, @PathVariable UUID id){
+    public ResponseEntity<Void> update(@Valid @RequestBody Especialidade especialidade, @PathVariable long id){
         especialidade.setId(id);
         especialidade = this.especialidadeService.update(especialidade);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable long id){
         this.especialidadeService.delete(id);
         return ResponseEntity.noContent().build();
     }

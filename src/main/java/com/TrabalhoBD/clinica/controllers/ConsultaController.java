@@ -37,17 +37,17 @@ public class ConsultaController {
         return ResponseEntity.ok().body(consulta);
     }
 
-    @GetMapping("/medico/{medico_id}")
-    public ResponseEntity<List<Consulta>> findAllByMedicoId(@PathVariable Long medico_id){
-        this.medicoService.findById(medico_id);
-        List<Consulta> consultas = this.consultaService.findAllByMedicoId(medico_id);
+    @GetMapping("/medico/{id_medico}")
+    public ResponseEntity<List<Consulta>> findAllByMedicoId(@PathVariable Long id_medico){
+        this.medicoService.findById(id_medico);
+        List<Consulta> consultas = this.consultaService.findAllByMedicoId(id_medico);
         return ResponseEntity.ok().body(consultas);
     }
 
-    @GetMapping("/paciente/{paciente_id}")
-    public ResponseEntity<List<Consulta>> findAllByPacienteId(@PathVariable Long paciente_id){
-        this.pacienteService.findById(paciente_id);
-        List<Consulta> consultas = this.consultaService.findAllByPacienteId(paciente_id);
+    @GetMapping("/paciente/{id_paciente}")
+    public ResponseEntity<List<Consulta>> findAllByPacienteId(@PathVariable Long id_paciente){
+        this.pacienteService.findById(id_paciente);
+        List<Consulta> consultas = this.consultaService.findAllByPacienteId(id_paciente);
         return ResponseEntity.ok().body(consultas);
     }
 

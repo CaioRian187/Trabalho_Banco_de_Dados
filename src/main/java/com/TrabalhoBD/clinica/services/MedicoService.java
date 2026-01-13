@@ -2,7 +2,10 @@ package com.TrabalhoBD.clinica.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import com.TrabalhoBD.clinica.models.Especialidade;
+import com.TrabalhoBD.clinica.repositories.EspecialidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,9 @@ public class MedicoService {
 
     @Autowired
     private MedicoRepository medicoRepository;
+
+    @Autowired
+    private EspecialidadeRepository especialidadeRepository;
 
     public Medico findById(Long id){
         Optional<Medico> medico = this.medicoRepository.findById(id);
@@ -49,11 +55,20 @@ public class MedicoService {
 
         newMedico.setNome(medico.getNome());
         newMedico.setCrm(medico.getCrm());
-        newMedico.setEspecialidade(medico.getEspecialidade());
+        newMedico.setTelefone(medico.getTelefone());
+        newMedico.setEspecialidades(resolveEspecialidades(medico));
 
         return this.medicoRepository.save(newMedico);
     }
-
+    private Set<Especialidade> resolveEspecialidades(Medico medico) {
+        if (medico.getEspecialidades() == null || medico.getEspecialidades().isEmpty()) {
+            return new java.util.HashSet<>();
+        }
+        return medico.getEspecialidades().stream()
+                .map(especialidade -> especialidadeRepository.findById(especialidade.getId())
+                        .orElseThrow(() -> new NotFoundException("Especialidade de id = " + especialidade.getId() + " não encontrada")))
+                .collect(java.util.stream.Collectors.toSet());
+    }
     public void deleteMedico(Long id){
         findById(id);
 
@@ -63,6 +78,4 @@ public class MedicoService {
             throw new DataIntegrityViolationException("Não é possível excluir, pois o médico possui vinculações");
         }
     }
-
-
 }

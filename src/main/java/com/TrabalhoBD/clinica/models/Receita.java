@@ -15,8 +15,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Entity
-@Table(name = "receitas")
+@Table(name = "receita")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,11 +27,11 @@ import lombok.Setter;
 public class Receita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
+    @Column(name = "id_receita", unique = true)
     private Long id;
 
-    @Column(name ="data_emissão", nullable = false, length = 255)
-    private String data_emissao;
+    @Column(name ="data_emissão", nullable = false)
+    private LocalDate dataEmissao;
 
     @Column(name = "medicamento", nullable = false, length = 255)
     @NotBlank
