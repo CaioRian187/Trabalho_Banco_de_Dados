@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatórios e Estatísticas</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stat-card {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .stat-result {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #007bff;
+            margin-top: 10px;
+        }
+        h3 { border-bottom: 2px solid #007bff; padding-bottom: 5px; margin-bottom: 15px; font-size: 1.1em;}
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="btn-home">⬅ Voltar ao Início</a>
+    <h1>Relatórios do Sistema</h1>
+
+    <div class="grid-2">
+        <div class="stat-card">
+            <h3> Maior Idade (MIN Data)</h3>
+            <p>Descubra a data de nascimento do paciente mais velho cadastrado.</p>
+            <button onclick="buscarMaisIdoso()">Carregar Dado</button>
+            <div id="res-min" class="stat-result">-</div>
+        </div>
+
+        <div class="stat-card">
+            <h3> Último Agendamento (MAX)</h3>
+            <p>Veja quando será a última consulta registrada no sistema.</p>
+            <button onclick="buscarUltimaData()">Carregar Dado</button>
+            <div id="res-max" class="stat-result">-</div>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <h3>️ Produtividade Médica (COUNT)</h3>
+        <p>Selecione um médico para ver quantas consultas ele tem agendadas.</p>
+        <div style="display: flex; gap: 10px;">
+            <select id="select-medico-count" style="flex: 1;"></select>
+            <button onclick="contarConsultas()">Calcular</button>
+        </div>
+        <div id="res-count" class="stat-result" style="text-align: center;">-</div>
+    </div>
+
+    <div class="form-section">
+        <h3> Buscar Paciente por Nome (LIKE)</h3>
+        <div style="display: flex; gap: 10px;">
+            <input type="text" id="termo-busca" placeholder="Digite parte do nome (ex: Gab)..." style="flex:1;">
+            <button onclick="buscarPacientesLike()">Buscar</button>
+        </div>
+
+        <table style="margin-top: 10px;">
+            <thead><tr><th>ID</th><th>Nome</th><th>CPF</th><th>Telefone</th></tr></thead>
+            <tbody id="table-like"></tbody>
+        </table>
+    </div>
+
+    <div class="form-section">
+        <h3>cardiologia Consultas por Especialidade (JOIN)</h3>
+        <p>Lista todas as consultas de médicos de uma especialidade específica.</p>
+        <div style="display: flex; gap: 10px;">
+            <select id="select-especialidade-join" style="flex:1;"></select>
+            <button onclick="buscarPorEspecialidade()">Filtrar</button>
+        </div>
+
+        <table style="margin-top: 10px;">
+            <thead><tr><th>Data/Hora</th><th>Médico</th><th>Paciente</th><th>Obs</th></tr></thead>
+            <tbody id="table-join"></tbody>
+        </table>
+    </div>
+
+</div>
+<script src="relatorioScript.js"></script>
+</body>
+</html>

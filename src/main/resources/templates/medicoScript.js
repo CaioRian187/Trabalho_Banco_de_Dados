@@ -45,7 +45,6 @@ async function salvarMedico(event) {
     const id = document.getElementById('medico-id').value;
     const especialidadeId = document.getElementById('select-especialidade').value;
 
-    // O Backend espera uma lista de objetos para especialidades
     const medicoData = {
         nome: document.getElementById('nome').value,
         crm: document.getElementById('crm').value,
@@ -82,7 +81,7 @@ async function excluirMedico(id) {
     try {
         const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
         if (response.ok) listarTodos();
-        else alert("Não foi possível excluir (Médico possui consultas?)");
+        else alert("Não foi possível excluir (Médico possui consultas)");
     } catch (error) {
         console.error("Erro:", error);
     }
@@ -122,8 +121,6 @@ function prepararEdicao(id, nome, crm, telefone) {
     document.getElementById('nome').value = nome;
     document.getElementById('crm').value = crm;
     document.getElementById('telefone').value = telefone;
-    // Nota: Selecionar a especialidade na edição é complexo se for N:N,
-    // deixaremos o select padrão por enquanto para simplificar.
 
     document.getElementById('form-title').innerText = "Editar Médico";
     document.getElementById('btn-cancel').style.display = "inline";
