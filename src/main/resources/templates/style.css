@@ -63,25 +63,19 @@ th {
     background-color: #f8f9fa;
 }
 
-/* Estilo do botão Voltar */
 .btn-home {
     display: inline-block;
-    /* Faz o link se comportar como um bloco/botão */
     background-color: #007bff;
-    /* Azul padrão */
     color: white;
     padding: 10px 20px;
     text-decoration: none;
-    /* Remove o sublinhado do link */
     border-radius: 4px;
     font-weight: bold;
     margin-bottom: 20px;
-    /* Espaço abaixo do botão */
     transition: background-color 0.3s;
 }
 
 .btn-home:hover {
     background-color: #0056b3;
-    /* Azul mais escuro ao passar o mouse */
     color: white;
 }

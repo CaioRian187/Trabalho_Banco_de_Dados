@@ -15,20 +15,29 @@
     <form id="receita-form">
       <input type="hidden" id="receita-id">
 
-      <label>Consulta Vinculada:</label>
-      <select id="select-consulta" required></select>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Consulta Vinculada:</label>
+        <select id="select-consulta" required style="width: 100%; padding: 8px;">
+        </select>
+      </div>
 
-      <label>Medicamento:</label>
-      <input type="text" id="medicamento" required>
+      <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+        <div style="flex: 2;"> <label style="display: block; margin-bottom: 5px; font-weight: bold;">Medicamento:</label>
+          <input type="text" id="medicamento" required style="width: 100%; box-sizing: border-box;">
+        </div>
 
-      <label>Dosagem:</label>
-      <input type="text" id="dosagem" required>
+        <div style="flex: 1;"> <label style="display: block; margin-bottom: 5px; font-weight: bold;">Dosagem:</label>
+          <input type="text" id="dosagem" required style="width: 100%; box-sizing: border-box;">
+        </div>
+      </div>
 
-      <label>Instruções:</label>
-      <textarea id="instrucoes" rows="3" style="width: 100%; margin-bottom:10px;" required></textarea>
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: bold;">Instruções:</label>
+        <textarea id="instrucoes" rows="3" style="width: 100%; padding: 8px; box-sizing: border-box;" required></textarea>
+      </div>
 
       <button type="submit" id="btn-save">Salvar</button>
-      <button type="button" id="btn-cancel" style="display:none;" onclick="resetForm()">Cancelar</button>
+      <button type="button" id="btn-cancel" style="display:none; background-color: #6c757d;" onclick="resetForm()">Cancelar</button>
     </form>
   </div>
 
