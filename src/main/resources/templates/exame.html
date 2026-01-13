@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Exames</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="btn-home">⬅ Voltar ao Início</a>
+    <h1>Gestão de Exames</h1>
+
+    <div class="form-section">
+        <h2 id="form-title">Agendar Exame</h2>
+        <form id="exame-form">
+            <input type="hidden" id="exame-id">
+
+            <label>Nome do Exame:</label>
+            <input type="text" id="nome" required>
+
+            <label>Data:</label>
+            <input type="date" id="data" required>
+
+            <label>Horário:</label>
+            <input type="time" id="horario" required>
+
+            <label>Descrição/Resultado:</label>
+            <input type="text" id="descricao" required>
+
+            <label>Médico Solicitante:</label>
+            <select id="select-medico" required></select>
+
+            <label>Paciente:</label>
+            <select id="select-paciente" required></select>
+
+            <button type="submit" id="btn-save" style="margin-top: 10px;">Salvar</button>
+            <button type="button" id="btn-cancel" style="display:none; margin-top: 10px;" onclick="resetForm()">Cancelar</button>
+        </form>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Exame</th>
+            <th>Data/Hora</th>
+            <th>Médico</th>
+            <th>Paciente</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="exame-table-body"></tbody>
+    </table>
+</div>
+<script src="exameScript.js"></script>
+</body>
+</html>

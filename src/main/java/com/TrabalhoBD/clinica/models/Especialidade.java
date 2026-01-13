@@ -30,7 +30,7 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class Especialidade {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_especialidade", unique = true, nullable = false)
     private Long id;
 

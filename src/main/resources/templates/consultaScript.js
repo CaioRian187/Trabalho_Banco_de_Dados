@@ -4,27 +4,97 @@ const API_PACIENTE = "http://localhost:8080/paciente";
 
 document.getElementById('consulta-form').addEventListener('submit', salvarConsulta);
 
-// Ao carregar a página, busca Médicos, Pacientes e lista Consultas
 window.onload = async () => {
     await carregarSelects();
     listarConsultas();
 };
 
 async function carregarSelects() {
-    // Preenche o Select de Médicos
-    const resMed = await fetch(API_MEDICO);
-    const medicos = await resMed.json();
-    const selMed = document.getElementById('select-medico');
-    if(Array.isArray(medicos)) {
-        medicos.forEach(m => selMed.innerHTML += `<option value="${m.id}">${m.nome} - ${m.especialidade}</option>`);
+    // 1. Carregar Médicos
+    try {
+        const resMed = await fetch(API_MEDICO);
+        const medicos = await resMed.json();
+        const selMed = document.getElementById('select-medico');
+
+        selMed.innerHTML = '<option value="" disabled selected>Selecione um médico...</option>';
+
+        if(Array.isArray(medicos)) {
+            medicos.forEach(m => {
+                // CORREÇÃO "UNDEFINED" NO MÉDICO:
+                // Verifica se existe lista de especialidades e mapeia os nomes
+                let nomeEspecialidades = "Clínico Geral"; // Valor padrão
+                if (m.especialidades && m.especialidades.length > 0) {
+                    nomeEspecialidades = m.especialidades.map(e => e.nome).join(", ");
+                }
+
+                selMed.innerHTML += `<option value="${m.id}">${m.nome} - ${nomeEspecialidades}</option>`;
+            });
+        }
+    } catch (e) { console.error("Erro ao carregar médicos:", e); }
+
+    // 2. Carregar Pacientes
+    try {
+        const resPac = await fetch(API_PACIENTE);
+        const pacientes = await resPac.json();
+        const selPac = document.getElementById('select-paciente');
+
+        selPac.innerHTML = '<option value="" disabled selected>Selecione um paciente...</option>';
+
+        if(Array.isArray(pacientes)) {
+            pacientes.forEach(p => selPac.innerHTML += `<option value="${p.id}">${p.nome}</option>`);
+        }
+    } catch (e) { console.error("Erro ao carregar pacientes:", e); }
+}
+
+async function salvarConsulta(event) {
+    event.preventDefault();
+
+    const id = document.getElementById('consulta-id').value;
+
+    // Inputs separados do HTML
+    const dataInput = document.getElementById('data').value;
+    const horarioInput = document.getElementById('horario').value;
+    const medicoId = document.getElementById('select-medico').value;
+    const pacienteId = document.getElementById('select-paciente').value;
+
+    if (!dataInput || !horarioInput || !medicoId || !pacienteId) {
+        alert("Preencha todos os campos obrigatórios.");
+        return;
     }
 
-    // Preenche o Select de Pacientes
-    const resPac = await fetch(API_PACIENTE);
-    const pacientes = await resPac.json();
-    const selPac = document.getElementById('select-paciente');
-    if(Array.isArray(pacientes)) {
-        pacientes.forEach(p => selPac.innerHTML += `<option value="${p.id}">${p.nome}</option>`);
+    // CORREÇÃO DO ERRO AO AGENDAR:
+    // O Java espera LocalDateTime ("yyyy-MM-ddTHH:mm:ss")
+    const dataHoraFormatada = `${dataInput}T${horarioInput}:00`;
+
+    const consulta = {
+        dataHora: dataHoraFormatada,
+        observacoes: document.getElementById('observacoes').value,
+        medico: { id: medicoId },
+        paciente: { id: pacienteId }
+    };
+
+    const method = id ? 'PUT' : 'POST';
+    const url = id ? `${API_CONSULTA}/${id}` : API_CONSULTA;
+
+    try {
+        const response = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(consulta)
+        });
+
+        if (response.ok) {
+            alert("Consulta agendada com sucesso!");
+            resetForm();
+            listarConsultas();
+        } else {
+            const erroText = await response.text();
+            console.error("Erro do servidor:", erroText);
+            alert("Erro ao agendar. Verifique o console para detalhes.");
+        }
+    } catch (error) {
+        console.error(error);
+        alert("Erro de conexão com o servidor.");
     }
 }
 
@@ -38,13 +108,20 @@ async function listarConsultas() {
         if (!Array.isArray(consultas)) return;
 
         consultas.forEach(c => {
-            // Verifica se medico/paciente não são nulos para evitar erro no display
             const nomeMedico = c.medico ? c.medico.nome : 'N/A';
             const nomePaciente = c.paciente ? c.paciente.nome : 'N/A';
 
+            // FORMATAR PARA BRASIL (DD/MM/YYYY HH:MM)
+            let dataExibicao = "Data Inválida";
+            if (c.dataHora) {
+                const dataObj = new Date(c.dataHora);
+                dataExibicao = dataObj.toLocaleDateString('pt-BR') + ' às ' +
+                               dataObj.toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit'});
+            }
+
             tbody.innerHTML += `
                 <tr>
-                    <td>${c.data} às ${c.horario}</td>
+                    <td>${dataExibicao}</td>
                     <td>${nomeMedico}</td>
                     <td>${nomePaciente}</td>
                     <td>${c.observacoes}</td>
@@ -56,39 +133,6 @@ async function listarConsultas() {
     } catch (error) { console.error("Erro ao listar consultas:", error); }
 }
 
-async function salvarConsulta(event) {
-    event.preventDefault();
-
-    const id = document.getElementById('consulta-id').value;
-
-    // Montando o objeto JSON conforme o Java espera (com objetos aninhados)
-    const consulta = {
-        data: document.getElementById('data').value,
-        horario: document.getElementById('horario').value,
-        observacoes: document.getElementById('observacoes').value,
-        medico: { id: document.getElementById('select-medico').value },
-        paciente: { id: document.getElementById('select-paciente').value }
-    };
-
-    // Consultas geralmente usamos POST para agendar. Edição é mais complexa.
-    // Vamos manter simples: POST para criar.
-    try {
-        const response = await fetch(API_CONSULTA, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(consulta)
-        });
-
-        if (response.ok) {
-            alert("Consulta agendada!");
-            resetForm();
-            listarConsultas();
-        } else {
-            alert("Erro ao agendar. Verifique os dados.");
-        }
-    } catch (error) { console.error(error); }
-}
-
 async function excluirConsulta(id) {
     if(confirm("Cancelar esta consulta?")) {
         await fetch(`${API_CONSULTA}/${id}`, { method: 'DELETE' });
@@ -98,4 +142,5 @@ async function excluirConsulta(id) {
 
 function resetForm() {
     document.getElementById('consulta-form').reset();
+    document.getElementById('consulta-id').value = "";
 }

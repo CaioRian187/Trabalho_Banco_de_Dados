@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciamento de Receitas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <a href="index.html" class="btn-home">⬅ Voltar ao Início</a>
+  <h1>Emissão de Receitas</h1>
+
+  <div class="form-section">
+    <h2 id="form-title">Nova Receita</h2>
+    <form id="receita-form">
+      <input type="hidden" id="receita-id">
+
+      <label>Consulta Vinculada:</label>
+      <select id="select-consulta" required></select>
+
+      <label>Medicamento:</label>
+      <input type="text" id="medicamento" required>
+
+      <label>Dosagem:</label>
+      <input type="text" id="dosagem" required>
+
+      <label>Instruções:</label>
+      <textarea id="instrucoes" rows="3" style="width: 100%; margin-bottom:10px;" required></textarea>
+
+      <button type="submit" id="btn-save">Salvar</button>
+      <button type="button" id="btn-cancel" style="display:none;" onclick="resetForm()">Cancelar</button>
+    </form>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Medicamento</th>
+      <th>Dosagem</th>
+      <th>Data Emissão</th>
+      <th>Consulta (Paciente)</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody id="receita-table-body"></tbody>
+  </table>
+</div>
+<script src="receitaScript.js"></script>
+</body>
+</html>

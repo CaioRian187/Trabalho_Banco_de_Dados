@@ -6,18 +6,35 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .menu-box { text-align: center; margin-top: 50px; }
-        .menu-btn { display: inline-block; padding: 20px 40px; margin: 10px; font-size: 1.2rem; text-decoration: none; background: #007bff; color: white; border-radius: 8px; }
+        .menu-btn {
+            display: inline-block; padding: 20px 40px; margin: 10px;
+            font-size: 1.2rem; text-decoration: none;
+            background: #007bff; color: white; border-radius: 8px;
+            min-width: 200px;
+        }
         .menu-btn:hover { background: #0056b3; }
+        .menu-row { margin-bottom: 20px; }
     </style>
 </head>
 <body>
 <div class="container menu-box">
     <h1>Sistema de Gestão Clínica</h1>
     <p>Selecione uma opção:</p>
-    <a href="medico.html" class="menu-btn">Gerenciar Médicos</a>
-    <a href="especialidade.html" class="menu-btn">Gerenciar Especialidades</a>
-    <a href="paciente.html" class="menu-btn">Gerenciar Pacientes</a>
-    <a href="consulta.html" class="menu-btn">Agendar Consultas</a>
+
+    <div class="menu-row">
+        <a href="medico.html" class="menu-btn"> Gerenciar Médicos</a>
+        <a href="paciente.html" class="menu-btn"> Gerenciar Pacientes</a>
+    </div>
+
+    <div class="menu-row">
+        <a href="especialidade.html" class="menu-btn"> Especialidades</a>
+        <a href="consulta.html" class="menu-btn"> Consultas</a>
+    </div>
+
+    <div class="menu-row">
+        <a href="exame.html" class="menu-btn"> Exames</a>
+        <a href="receita.html" class="menu-btn"> Receitas</a>
+    </div>
 </div>
 </body>
 </html>

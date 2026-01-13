@@ -15,26 +15,32 @@
     <form id="consulta-form">
       <input type="hidden" id="consulta-id">
 
-      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <select id="select-medico" required style="flex: 1; padding: 8px;">
-          <option value="">Selecione o Médico</option>
-        </select>
-        <select id="select-paciente" required style="flex: 1; padding: 8px;">
-          <option value="">Selecione o Paciente</option>
-        </select>
+      <label for="select-medico">Médico:</label>
+      <select id="select-medico" required style="width: 100%; margin-bottom: 10px; padding: 8px;">
+        <option value="" disabled selected>Carregando...</option>
+      </select>
+
+      <label for="select-paciente">Paciente:</label>
+      <select id="select-paciente" required style="width: 100%; margin-bottom: 10px; padding: 8px;">
+        <option value="" disabled selected>Carregando...</option>
+      </select>
+
+      <div style="display: flex; gap: 10px;">
+        <div style="flex: 1;">
+          <label for="data">Data:</label>
+          <input type="date" id="data" required style="width: 100%;">
+        </div>
+        <div style="flex: 1;">
+          <label for="horario">Horário:</label>
+          <input type="time" id="horario" required style="width: 100%;">
+        </div>
       </div>
 
-      <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <input type="text" id="data" placeholder="Data (Ex: 10/10/2025)" required style="flex: 1;">
-        <input type="text" id="horario" placeholder="Horário (Ex: 14:30)" required style="flex: 1;">
-      </div>
+      <label for="observacoes">Motivo / Observações:</label>
+      <input type="text" id="observacoes" placeholder="Ex: Dor de cabeça, Rotina..." required style="width: 100%; margin-bottom: 10px;">
 
-      <input type="text" id="observacoes" placeholder="Observações" required style="width: 100%; box-sizing: border-box;">
-
-      <div style="margin-top: 15px;">
-        <button type="submit" id="btn-save">Agendar</button>
-        <button type="button" id="btn-cancel" style="display:none;" onclick="resetForm()">Cancelar</button>
-      </div>
+      <button type="submit" id="btn-save">Agendar</button>
+      <button type="button" id="btn-cancel" style="display:none;" onclick="resetForm()">Cancelar</button>
     </form>
   </div>
 
